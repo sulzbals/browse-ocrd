@@ -46,6 +46,7 @@ class ViewHtml(View):
 
     def redraw(self) -> None:
         if self.current:
-            self.web_view.set_tooltip_text(self.page_id)
-            self.web_view.load_uri('file://' + str(self.document.path(self.current.file.local_filename)))
-            self.web_view.show()
+            with self.document.path(self.current.file.local_filename).open(mode='r') as fp:
+                self.web_view.set_tooltip_text(self.page_id)
+                self.web_view.load_html(fp.read(), 'file://' + str(self.document.directory) + '/')
+                self.web_view.show()
